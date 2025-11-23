@@ -3,6 +3,7 @@ import streamlit as st
 from PIL import Image
 import io
 import os
+import requests
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -11,14 +12,35 @@ from efficientnet_pytorch import EfficientNet
 
 # ---------------- USER CONFIG ----------------
 MODEL_PATH = "efficientnet_b4_mapped.pth"
+# release URL you provided:
+RELEASE_URL = "https://github.com/tasnim2177/book-genre-predictor/releases/download/v1.0/efficientnet_b4_mapped.pth"
 MODEL_NAME = "efficientnet-b4"
-IMG_SIZE = 224
-NUM_CLASSES = 32
+IMG_SIZE = 380
+NUM_CLASSES = 10
 LABELS_PATH = "labels.txt"
 TOP_K = 5
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # ---------------------------------------------
 
+# ---------- ensure model is present (download from GitHub Releases if needed) ----------
+def download_with_progress(url, dst):
+    if os.path.exists(dst):
+        return
+    # stream-download
+    r = requests.get(url, stream=True)
+    r.raise_for_status()
+    total = int(r.headers.get("content-length", 0))
+    downloaded = 0
+    with open(dst, "wb") as f:
+        for chunk in r.iter_content(chunk_size=8192):
+            if chunk:
+                f.write(chunk)
+                downloaded += len(chunk)
+
+if not os.path.exists(MODEL_PATH):
+    download_with_progress(RELEASE_URL, MODEL_PATH)
+
+# ---------- Streamlit UI ----------
 st.set_page_config(page_title="Book Cover → Genre (EfficientNet-B4)", layout="centered")
 st.title("📚 Book Cover → Genre Predictor")
 

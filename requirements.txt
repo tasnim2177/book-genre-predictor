@@ -1,8 +1,6 @@
 streamlit
 torch
 torchvision
-timm
-pillow
-numpy
-scikit-learn
-pyngrok   # only if you plan to use ngrok
+efficientnet_pytorch
+Pillow
+requests

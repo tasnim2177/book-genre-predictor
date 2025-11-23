@@ -15,8 +15,8 @@ MODEL_PATH = "efficientnet_b4_mapped.pth"
 # release URL you provided:
 RELEASE_URL = "https://github.com/tasnim2177/book-genre-predictor/releases/download/v1.0/efficientnet_b4_mapped.pth"
 MODEL_NAME = "efficientnet-b4"
-IMG_SIZE = 380
-NUM_CLASSES = 10
+IMG_SIZE = 224
+NUM_CLASSES = 32
 LABELS_PATH = "labels.txt"
 TOP_K = 5
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
